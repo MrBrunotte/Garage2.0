@@ -10,7 +10,7 @@ namespace Garage2._0.Models
         public int ID { get; set; }
 
         [Required, StringLength(30)]
-        public string VehicleType { get; set; }
+        public VehicleType VehicleType { get; set; }
 
         [Required, StringLength(30)]
         public string RegNum { get; set; }
