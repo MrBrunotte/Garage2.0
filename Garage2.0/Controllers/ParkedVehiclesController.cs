@@ -1,28 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Garage2._0.Data;
+using Garage2._0.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using Garage2._0.Data;
-using Garage2._0.Models;
 
 namespace Garage2._0.Controllers
 {
     public class ParkedVehiclesController : Controller
     {
-        private readonly Garage2_0Context _context;
+        private readonly Garage2_0Context db;
 
         public ParkedVehiclesController(Garage2_0Context context)
         {
-            _context = context;
+            db = context;
         }
 
         // GET: ParkedVehicles
         public async Task<IActionResult> Index()
         {
-            return View(await _context.ParkedVehicle.ToListAsync());
+            return View(await db.ParkedVehicle.ToListAsync());
         }
 
         // GET: ParkedVehicles/Details/5
@@ -33,7 +30,7 @@ namespace Garage2._0.Controllers
                 return NotFound();
             }
 
-            var parkedVehicle = await _context.ParkedVehicle
+            var parkedVehicle = await db.ParkedVehicle
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (parkedVehicle == null)
             {
@@ -50,7 +47,7 @@ namespace Garage2._0.Controllers
         }
 
         // POST: ParkedVehicles/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -58,8 +55,8 @@ namespace Garage2._0.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(parkedVehicle);
-                await _context.SaveChangesAsync();
+                db.Add(parkedVehicle);
+                await db.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(parkedVehicle);
@@ -73,7 +70,7 @@ namespace Garage2._0.Controllers
                 return NotFound();
             }
 
-            var parkedVehicle = await _context.ParkedVehicle.FindAsync(id);
+            var parkedVehicle = await db.ParkedVehicle.FindAsync(id);
             if (parkedVehicle == null)
             {
                 return NotFound();
@@ -82,7 +79,7 @@ namespace Garage2._0.Controllers
         }
 
         // POST: ParkedVehicles/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -97,8 +94,8 @@ namespace Garage2._0.Controllers
             {
                 try
                 {
-                    _context.Update(parkedVehicle);
-                    await _context.SaveChangesAsync();
+                    db.Update(parkedVehicle);
+                    await db.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -124,7 +121,7 @@ namespace Garage2._0.Controllers
                 return NotFound();
             }
 
-            var parkedVehicle = await _context.ParkedVehicle
+            var parkedVehicle = await db.ParkedVehicle
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (parkedVehicle == null)
             {
@@ -139,15 +136,15 @@ namespace Garage2._0.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var parkedVehicle = await _context.ParkedVehicle.FindAsync(id);
-            _context.ParkedVehicle.Remove(parkedVehicle);
-            await _context.SaveChangesAsync();
+            var parkedVehicle = await db.ParkedVehicle.FindAsync(id);
+            db.ParkedVehicle.Remove(parkedVehicle);
+            await db.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool ParkedVehicleExists(int id)
         {
-            return _context.ParkedVehicle.Any(e => e.ID == id);
+            return db.ParkedVehicle.Any(e => e.ID == id);
         }
     }
 }
