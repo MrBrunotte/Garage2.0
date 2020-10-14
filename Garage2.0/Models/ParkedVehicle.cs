@@ -12,16 +12,16 @@ namespace Garage2._0.Models
         [Required, StringLength(30)]
         public VehicleType VehicleType { get; set; }
 
-        [Required, StringLength(30)]
+        [Required, StringLength(8)]
         public string RegNum { get; set; }
 
         [Required]
         public string Color { get; set; }
 
-        [Required, StringLength(30)]
+        [Required, StringLength(15)]
         public string Make { get; set; }
 
-        [Required, StringLength(30)]
+        [Required, StringLength(15)]
         public string Model { get; set; }
 
         [Required, Display(Name = "Number of Wheels")]
@@ -29,5 +29,14 @@ namespace Garage2._0.Models
 
         [DataType(DataType.Duration), Display(Name = "Duration of parking")]
         public DateTime ArrivalTime { get; set; }
+
+        [Timestamp]
+        public byte[] CheckInTime { get; set; }
+
+        [Timestamp]
+        public byte[] CheckOutTime { get; set; }
+
+        public bool CheckedIn { get; set; }
+
     }
 }
