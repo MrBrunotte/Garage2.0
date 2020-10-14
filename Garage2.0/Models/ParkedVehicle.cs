@@ -9,31 +9,31 @@ namespace Garage2._0.Models
         // Add Data Annotations for each property
         public int ID { get; set; }
 
-        [Required, StringLength(30)]
+        [Required, StringLength(30), Display(Name = "Type of Vehicle")]
         public VehicleType VehicleType { get; set; }
 
-        [Required, StringLength(8)]
+        [Required, StringLength(8), Display(Name ="Registration number")]
         public string RegNum { get; set; }
 
-        [Required]
+        [Required, Display(Name = "Vehicle Color")]
         public string Color { get; set; }
 
-        [Required, StringLength(15)]
+        [Required, StringLength(15), Display(Name = "Make of Vehicle")]
         public string Make { get; set; }
 
-        [Required, StringLength(15)]
+        [Required, StringLength(15), Display(Name = "Model of Vehicle")]
         public string Model { get; set; }
 
         [Required, Display(Name = "Number of Wheels")]
         public int NumOfWheels { get; set; }
 
-        [DataType(DataType.Duration), Display(Name = "Duration of parking")]
+        [DataType(DataType.Duration), Display(Name = "Time of Arrival")]
         public DateTime ArrivalTime { get; set; }
 
-        [Timestamp]
+        [Timestamp, Display(Name = "Parking Check In Time")]
         public byte[] CheckInTime { get; set; }
 
-        [DataType(DataType.DateTime)]
+        [DataType(DataType.DateTime), Display(Name = "Parking Check Out Time")]
         public DateTime CheckOutTime { get; set; }
 
         public bool CheckedIn { get; set; }
