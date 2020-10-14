@@ -33,8 +33,8 @@ namespace Garage2._0.Models
         [Timestamp]
         public byte[] CheckInTime { get; set; }
 
-        [Timestamp]
-        public byte[] CheckOutTime { get; set; }
+        [DataType(DataType.DateTime)]
+        public DateTime CheckOutTime { get; set; }
 
         public bool CheckedIn { get; set; }
 
