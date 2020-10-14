@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Garage2._0.Data;
 using Garage2._0.Models;
+using Garage2._0.Models.ViewModels;
 
 namespace Garage2._0.Controllers
 {
@@ -143,6 +144,27 @@ namespace Garage2._0.Controllers
             _context.ParkedVehicle.Remove(parkedVehicle);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        // TODO: Parked vehicle must not have been removed yet
+        // TODO: when/who sets checkout time?? Set checkout time in Receipt view to now? (the time when recept is printed)
+        public async Task<IActionResult> Receipt(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            
+            var parkedVehicle = await _context.ParkedVehicle.FindAsync(id);
+
+            var receipt = new ReceiptViewModel
+            {
+                RegNum = parkedVehicle.RegNum,
+                ArrivalTime = parkedVehicle.ArrivalTime,
+                CheckOutTime = parkedVehicle.ArrivalTime.AddMinutes(20)
+            };
+
+            return View(receipt);
         }
 
         private bool ParkedVehicleExists(int id)
