@@ -1,17 +1,10 @@
 ﻿@model Garage2._0.Models.ParkedVehicle
 
 @{
-    Layout = null;
+    ViewData["Title"] = "CheckInVehicle";
 }
 
-<!DOCTYPE html>
-
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Create</title>
-</head>
-<body>
+<h1>Park Your Vehicle</h1>
 
 <h4>ParkedVehicle</h4>
 <hr />
@@ -55,16 +48,6 @@
                 <span asp-validation-for="ArrivalTime" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="CheckOutTime" class="control-label"></label>
-                <input asp-for="CheckOutTime" class="form-control" />
-                <span asp-validation-for="CheckOutTime" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="CheckedIn" /> @Html.DisplayNameFor(model => model.CheckedIn)
-                </label>
-            </div>
-            <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
@@ -78,5 +61,3 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
-</body>
-</html>

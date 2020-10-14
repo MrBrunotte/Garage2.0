@@ -1,25 +1,28 @@
-﻿using Garage2._0.Data;
-using Garage2._0.Models;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using Garage2._0.Data;
+using Garage2._0.Models;
 
 namespace Garage2._0.Controllers
 {
     public class ParkedVehiclesController : Controller
     {
-        private readonly Garage2_0Context db;
+        private readonly Garage2_0Context _context;
 
         public ParkedVehiclesController(Garage2_0Context context)
         {
-            db = context;
+            _context = context;
         }
 
         // GET: ParkedVehicles
         public async Task<IActionResult> Index()
         {
-            return View(await db.ParkedVehicle.ToListAsync());
+            return View(await _context.ParkedVehicle.ToListAsync());
         }
 
         // GET: ParkedVehicles/Details/5
@@ -30,7 +33,7 @@ namespace Garage2._0.Controllers
                 return NotFound();
             }
 
-            var parkedVehicle = await db.ParkedVehicle
+            var parkedVehicle = await _context.ParkedVehicle
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (parkedVehicle == null)
             {
@@ -40,23 +43,23 @@ namespace Garage2._0.Controllers
             return View(parkedVehicle);
         }
 
-        // GET: ParkedVehicles/Create
-        public IActionResult Create()
+        // GET: ParkedVehicles/CheckInVehicle
+        public IActionResult CheckInVehicle()
         {
             return View();
         }
 
-        // POST: ParkedVehicles/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
+        // POST: ParkedVehicles/CheckInVehicle
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,VehicleType,RegNum,Color,Make,Model,NumOfWheels,ArrivalTime,CheckInTime,CheckOutTime,CheckedIn")] ParkedVehicle parkedVehicle)
+        public async Task<IActionResult> CheckInVehicle([Bind("ID,VehicleType,RegNum,Color,Make,Model,NumOfWheels,ArrivalTime")] ParkedVehicle parkedVehicle)
         {
             if (ModelState.IsValid)
             {
-                db.Add(parkedVehicle);
-                await db.SaveChangesAsync();
+                _context.Add(parkedVehicle);
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(parkedVehicle);
@@ -70,7 +73,7 @@ namespace Garage2._0.Controllers
                 return NotFound();
             }
 
-            var parkedVehicle = await db.ParkedVehicle.FindAsync(id);
+            var parkedVehicle = await _context.ParkedVehicle.FindAsync(id);
             if (parkedVehicle == null)
             {
                 return NotFound();
@@ -79,11 +82,11 @@ namespace Garage2._0.Controllers
         }
 
         // POST: ParkedVehicles/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,VehicleType,RegNum,Color,Make,Model,NumOfWheels,ArrivalTime,CheckInTime,CheckOutTime,CheckedIn")] ParkedVehicle parkedVehicle)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,VehicleType,RegNum,Color,Make,Model,NumOfWheels,ArrivalTime")] ParkedVehicle parkedVehicle)
         {
             if (id != parkedVehicle.ID)
             {
@@ -94,8 +97,8 @@ namespace Garage2._0.Controllers
             {
                 try
                 {
-                    db.Update(parkedVehicle);
-                    await db.SaveChangesAsync();
+                    _context.Update(parkedVehicle);
+                    await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -121,7 +124,7 @@ namespace Garage2._0.Controllers
                 return NotFound();
             }
 
-            var parkedVehicle = await db.ParkedVehicle
+            var parkedVehicle = await _context.ParkedVehicle
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (parkedVehicle == null)
             {
@@ -136,15 +139,15 @@ namespace Garage2._0.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var parkedVehicle = await db.ParkedVehicle.FindAsync(id);
-            db.ParkedVehicle.Remove(parkedVehicle);
-            await db.SaveChangesAsync();
+            var parkedVehicle = await _context.ParkedVehicle.FindAsync(id);
+            _context.ParkedVehicle.Remove(parkedVehicle);
+            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool ParkedVehicleExists(int id)
         {
-            return db.ParkedVehicle.Any(e => e.ID == id);
+            return _context.ParkedVehicle.Any(e => e.ID == id);
         }
     }
 }
