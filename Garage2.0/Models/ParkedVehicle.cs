@@ -24,7 +24,7 @@ namespace Garage2._0.Models
         [Required, StringLength(15), Display(Name = "Model of Vehicle")]
         public string Model { get; set; }
 
-        [Required, Display(Name = "Number of Wheels")]
+        [Required, Range(1,20), Display(Name = "Number of Wheels")]
         public int NumOfWheels { get; set; }
 
         [DataType(DataType.Duration), Display(Name = "Time of Arrival")]
