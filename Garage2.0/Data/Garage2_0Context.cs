@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Garage2._0.Models;
-using Microsoft.CodeAnalysis.FlowAnalysis;
 
 namespace Garage2._0.Data
 {
@@ -19,22 +18,24 @@ namespace Garage2._0.Data
 
         protected override void OnModelCreating(ModelBuilder modelbuilder)
         {
-            
+
             modelbuilder.Entity<ParkedVehicle>()
                 .HasData(
 
-                new ParkedVehicle { ID = 1, 
-                    VehicleType = VehicleType.SportsCar, 
-                    RegNum="FZK678", 
-                    Color ="Black", 
-                    Make ="Dodge", 
-                    Model="Nitro TR 4/4", 
-                    NumOfWheels=4,
-                    ArrivalTime= DateTime.Parse("2020-10-14"), 
-                    CheckInTime= System.DateTime.Now,
-                    CheckOutTime= DateTime.Now.AddHours(2) ,
-                    CheckedIn=true},
-                new ParkedVehicle { ID = 2, 
+                new ParkedVehicle
+                {
+                    ID = 1,
+                    VehicleType = VehicleType.SportsCar,
+                    RegNum = "FZK678",
+                    Color = "Black",
+                    Make = "Dodge",
+                    Model = "Nitro TR 4/4",
+                    NumOfWheels = 4,
+                    ArrivalTime = DateTime.Parse("2020-10-14"),
+                },
+                new ParkedVehicle
+                {
+                    ID = 2,
                     VehicleType = VehicleType.SportsCar,
                     RegNum = "FZK677",
                     Color = "Black",
@@ -42,9 +43,7 @@ namespace Garage2._0.Data
                     Model = "SS",
                     NumOfWheels = 4,
                     ArrivalTime = DateTime.Parse("2020-10-14"),
-                    CheckInTime = System.DateTime.Now,
-                    CheckOutTime = DateTime.Now.AddHours(2),
-                    CheckedIn = true
+
                 },
                 new ParkedVehicle
                 {
@@ -56,12 +55,11 @@ namespace Garage2._0.Data
                     Model = "NightRod",
                     NumOfWheels = 2,
                     ArrivalTime = DateTime.Parse("2020-10-14"),
-                    CheckInTime = System.DateTime.Now,
-                    CheckOutTime = DateTime.Now.AddHours(2),
-                    CheckedIn = true
                 }
 
                 );
         }
+
+
     }
 }
