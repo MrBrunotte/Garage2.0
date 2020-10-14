@@ -34,8 +34,8 @@ namespace Garage2._0.Migrations
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion");
 
-                    b.Property<byte[]>("CheckOutTime")
-                        .HasColumnType("varbinary(max)");
+                    b.Property<DateTime>("CheckOutTime")
+                        .HasColumnType("datetime2");
 
                     b.Property<bool>("CheckedIn")
                         .HasColumnType("bit");

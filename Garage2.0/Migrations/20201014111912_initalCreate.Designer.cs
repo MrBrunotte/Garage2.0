@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Garage2._0.Migrations
 {
     [DbContext(typeof(Garage2_0Context))]
-    [Migration("20201014092852_Init")]
-    partial class Init
+    [Migration("20201014111912_initalCreate")]
+    partial class initalCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -36,8 +36,8 @@ namespace Garage2._0.Migrations
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion");
 
-                    b.Property<byte[]>("CheckOutTime")
-                        .HasColumnType("varbinary(max)");
+                    b.Property<DateTime>("CheckOutTime")
+                        .HasColumnType("datetime2");
 
                     b.Property<bool>("CheckedIn")
                         .HasColumnType("bit");

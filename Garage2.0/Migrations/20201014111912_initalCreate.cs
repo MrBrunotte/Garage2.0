@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Garage2._0.Migrations
 {
-    public partial class Init : Migration
+    public partial class initalCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -21,7 +21,7 @@ namespace Garage2._0.Migrations
                     NumOfWheels = table.Column<int>(nullable: false),
                     ArrivalTime = table.Column<DateTime>(nullable: false),
                     CheckInTime = table.Column<byte[]>(rowVersion: true, nullable: true),
-                    CheckOutTime = table.Column<byte[]>(nullable: true),
+                    CheckOutTime = table.Column<DateTime>(nullable: false),
                     CheckedIn = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
