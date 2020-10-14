@@ -43,18 +43,18 @@ namespace Garage2._0.Controllers
             return View(parkedVehicle);
         }
 
-        // GET: ParkedVehicles/ParkVechicle
-        public IActionResult ParkVechicle()
+        // GET: ParkedVehicles/CheckInVehicle
+        public IActionResult CheckInVehicle()
         {
             return View();
         }
 
-        // POST: ParkedVehicles/ParkVechicle
+        // POST: ParkedVehicles/CheckInVehicle
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ParkVechicle([Bind("ID,VehicleType,RegNum,Color,Make,Model,NumOfWheels,ArrivalTime")] ParkedVehicle parkedVehicle)
+        public async Task<IActionResult> CheckInVehicle([Bind("ID,VehicleType,RegNum,Color,Make,Model,NumOfWheels,ArrivalTime")] ParkedVehicle parkedVehicle)
         {
             if (ModelState.IsValid)
             {
