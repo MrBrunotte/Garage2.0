@@ -30,10 +30,11 @@ namespace Garage2._0.Models
         [DataType(DataType.Duration), Display(Name = "Time of Arrival")]
         public DateTime ArrivalTime { get; set; }
 
-        [Timestamp, Display(Name = "Parking Check In Time")]
-        public byte[] CheckInTime { get; set; }
+        [Timestamp]
+        public DateTime CheckInTime { get; set; }
 
-        [DataType(DataType.DateTime), Display(Name = "Parking Check Out Time")]
+        [DataType(DataType.DateTime)]
+        [Display(Name = "Checkout Time")]
         public DateTime CheckOutTime { get; set; }
 
         public bool CheckedIn { get; set; }
