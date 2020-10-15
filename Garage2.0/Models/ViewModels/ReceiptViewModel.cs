@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Garage2._0.Models.ViewModels
 {
@@ -15,7 +12,7 @@ namespace Garage2._0.Models.ViewModels
         public DateTime ArrivalTime { get; set; }
         [Display(Name = "Time of Checkout")]
         public DateTime CheckOutTime { get; set; }
-       
+        [Display(Name = "Parking Time")]
         public TimeSpan Period { get; set; }
         public double Cost { get; set; }
     }
