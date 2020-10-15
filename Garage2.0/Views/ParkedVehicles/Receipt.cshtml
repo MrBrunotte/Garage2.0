@@ -4,7 +4,7 @@
     ViewData["Title"] = "Checkout Receipt";
 }
 
-<h1>Receipt @Model.RegNum</h1>
+<h1>Receipt</h1>
 
 <div>
     <h4>Vehicle</h4>
@@ -43,5 +43,9 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Index">Back to List</a>
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="ID" />
+        <input type="submit" value="Check out vehicle" class="btn btn-warning" /> |
+        <a asp-action="Index">Back to List</a>
+    </form>
 </div>
