@@ -132,7 +132,20 @@ namespace Garage2._0.Controllers
                 return NotFound();
             }
 
-            return View(parkedVehicle);
+            const double costPerMinute = 0.1;
+            var arrival = parkedVehicle.ArrivalTime;
+            var checkout = DateTime.Now;
+
+            var receipt = new ReceiptViewModel
+            {
+                RegNum = parkedVehicle.RegNum,
+                ArrivalTime = arrival,
+                CheckOutTime = checkout,
+                Period = checkout - arrival,
+                Cost = Math.Round((checkout - arrival).TotalMinutes * costPerMinute, 2)
+            };
+
+            return View(receipt);
         }
 
         // POST: ParkedVehicles/Delete/5
@@ -141,10 +154,28 @@ namespace Garage2._0.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var parkedVehicle = await _context.ParkedVehicle.FindAsync(id);
-            var regnum = parkedVehicle.RegNum;
+            
+            if (parkedVehicle == null)
+            {
+                return NotFound();
+            }
+            const double costPerMinute = 0.1;
+            var arrival = parkedVehicle.ArrivalTime;
+            var checkout = DateTime.Now;
+
+            var receipt = new ReceiptViewModel
+            {
+                RegNum = parkedVehicle.RegNum,
+                ArrivalTime = arrival,
+                CheckOutTime = checkout,
+                Period = checkout - arrival,
+                Cost = Math.Round((checkout - arrival).TotalMinutes * costPerMinute, 2)
+            };
+      
             _context.ParkedVehicle.Remove(parkedVehicle);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Feedback), new {RegNum = regnum, Message = "Checked out" });
+ 
+            return View(nameof(Receipt), receipt);
         }
 
         public async Task<IActionResult> Receipt(int? id)
