@@ -157,11 +157,23 @@ namespace Garage2._0.Controllers
             
             var parkedVehicle = await _context.ParkedVehicle.FindAsync(id);
 
+            if (parkedVehicle == null)
+            {
+                return NotFound();
+            }
+
+            const double costPerMinute = 2.0; 
+            var arrival = parkedVehicle.ArrivalTime;
+            var checkout = parkedVehicle.ArrivalTime.AddMinutes(130);   // TODO: Just for test. should be Now()
+
+
             var receipt = new ReceiptViewModel
             {
                 RegNum = parkedVehicle.RegNum,
-                ArrivalTime = parkedVehicle.ArrivalTime,
-                CheckOutTime = parkedVehicle.ArrivalTime.AddMinutes(20)
+                ArrivalTime = arrival,
+                CheckOutTime = checkout,
+                Period = checkout - arrival,
+                Cost = (checkout - arrival).TotalMinutes * costPerMinute
             };
 
             return View(receipt);
