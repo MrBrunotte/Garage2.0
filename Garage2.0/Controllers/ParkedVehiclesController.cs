@@ -146,8 +146,6 @@ namespace Garage2._0.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // TODO: Parked vehicle must not have been removed yet
-        // TODO: when/who sets checkout time?? Set checkout time in Receipt view to now? (the time when recept is printed)
         public async Task<IActionResult> Receipt(int? id)
         {
             if (id == null)
@@ -162,10 +160,10 @@ namespace Garage2._0.Controllers
                 return NotFound();
             }
 
-            const double costPerMinute = 2.0; 
+            const double costPerMinute = 0.1; 
             var arrival = parkedVehicle.ArrivalTime;
-            var checkout = parkedVehicle.ArrivalTime.AddMinutes(130);   // TODO: Just for test. should be Now()
-
+            //var checkout = parkedVehicle.ArrivalTime.AddMinutes(130);   // TODO: Just for test. should be Now()
+            var checkout = DateTime.Now;  
 
             var receipt = new ReceiptViewModel
             {
@@ -173,7 +171,7 @@ namespace Garage2._0.Controllers
                 ArrivalTime = arrival,
                 CheckOutTime = checkout,
                 Period = checkout - arrival,
-                Cost = (checkout - arrival).TotalMinutes * costPerMinute
+                Cost = Math.Round((checkout - arrival).TotalMinutes * costPerMinute, 2)
             };
 
             return View(receipt);
