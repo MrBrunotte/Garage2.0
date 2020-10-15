@@ -162,7 +162,6 @@ namespace Garage2._0.Controllers
 
             const double costPerMinute = 0.1; 
             var arrival = parkedVehicle.ArrivalTime;
-            //var checkout = parkedVehicle.ArrivalTime.AddMinutes(130);   // TODO: Just for test. should be Now()
             var checkout = DateTime.Now;  
 
             var receipt = new ReceiptViewModel
