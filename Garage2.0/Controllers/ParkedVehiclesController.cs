@@ -1,7 +1,9 @@
 ﻿using Garage2._0.Data;
 using Garage2._0.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -9,11 +11,11 @@ namespace Garage2._0.Controllers
 {
     public class ParkedVehiclesController : Controller
     {
-        private readonly Garage2_0Context db;
+        private readonly Garage2_0Context _context;
 
         public ParkedVehiclesController(Garage2_0Context context)
         {
-            db = context;
+            _context = context;
         }
 
         // GET: ParkedVehicles
@@ -69,7 +71,7 @@ namespace Garage2._0.Controllers
                 return NotFound();
             }
 
-            var parkedVehicle = await db.ParkedVehicle
+            var parkedVehicle = await _context.ParkedVehicle
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (parkedVehicle == null)
             {
@@ -94,8 +96,8 @@ namespace Garage2._0.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Add(parkedVehicle);
-                await db.SaveChangesAsync();
+                _context.Add(parkedVehicle);
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(parkedVehicle);
@@ -109,7 +111,7 @@ namespace Garage2._0.Controllers
                 return NotFound();
             }
 
-            var parkedVehicle = await db.ParkedVehicle.FindAsync(id);
+            var parkedVehicle = await _context.ParkedVehicle.FindAsync(id);
             if (parkedVehicle == null)
             {
                 return NotFound();
@@ -133,8 +135,8 @@ namespace Garage2._0.Controllers
             {
                 try
                 {
-                    db.Update(parkedVehicle);
-                    await db.SaveChangesAsync();
+                    _context.Update(parkedVehicle);
+                    await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -160,7 +162,7 @@ namespace Garage2._0.Controllers
                 return NotFound();
             }
 
-            var parkedVehicle = await db.ParkedVehicle
+            var parkedVehicle = await _context.ParkedVehicle
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (parkedVehicle == null)
             {
@@ -175,15 +177,15 @@ namespace Garage2._0.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var parkedVehicle = await db.ParkedVehicle.FindAsync(id);
-            db.ParkedVehicle.Remove(parkedVehicle);
-            await db.SaveChangesAsync();
+            var parkedVehicle = await _context.ParkedVehicle.FindAsync(id);
+            _context.ParkedVehicle.Remove(parkedVehicle);
+            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool ParkedVehicleExists(int id)
         {
-            return db.ParkedVehicle.Any(e => e.ID == id);
+            return _context.ParkedVehicle.Any(e => e.ID == id);
         }
     }
 }
