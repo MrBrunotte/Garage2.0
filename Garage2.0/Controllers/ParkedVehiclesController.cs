@@ -13,6 +13,8 @@ namespace Garage2._0.Controllers
 {
     public class ParkedVehiclesController : Controller
     {
+        private const double costPerMinute = 0.1;
+
         private readonly Garage2_0Context _context;
 
         public ParkedVehiclesController(Garage2_0Context context)
@@ -131,8 +133,7 @@ namespace Garage2._0.Controllers
             {
                 return NotFound();
             }
-
-            const double costPerMinute = 0.1;
+     
             var arrival = parkedVehicle.ArrivalTime;
             var checkout = DateTime.Now;
 
@@ -142,6 +143,7 @@ namespace Garage2._0.Controllers
                 ArrivalTime = arrival,
                 CheckOutTime = checkout,
                 Period = checkout - arrival,
+                CostPerMinute = costPerMinute,
                 Cost = Math.Round((checkout - arrival).TotalMinutes * costPerMinute, 2)
             };
 
@@ -155,32 +157,19 @@ namespace Garage2._0.Controllers
         {
             var parkedVehicle = await _context.ParkedVehicle.FindAsync(id);
             var regnum = parkedVehicle.RegNum;
+            var arrival = parkedVehicle.ArrivalTime;
+            var checkout = DateTime.Now;
+
             _context.ParkedVehicle.Remove(parkedVehicle);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Feedback), new {RegNum = regnum, Message = "Checked out" });
+            return RedirectToAction(nameof(Receipt), new {RegNum = regnum, Arrival = arrival, Checkout = checkout});
         }
 
-        public async Task<IActionResult> Receipt(int? id)
+        public IActionResult Receipt(string regNum, DateTime arrival, DateTime checkout)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-            
-            var parkedVehicle = await _context.ParkedVehicle.FindAsync(id);
-
-            if (parkedVehicle == null)
-            {
-                return NotFound();
-            }
-
-            const double costPerMinute = 0.1; 
-            var arrival = parkedVehicle.ArrivalTime;
-            var checkout = DateTime.Now;  
-
             var receipt = new ReceiptViewModel
             {
-                RegNum = parkedVehicle.RegNum,
+                RegNum = regNum,
                 ArrivalTime = arrival,
                 CheckOutTime = checkout,
                 Period = checkout - arrival,
