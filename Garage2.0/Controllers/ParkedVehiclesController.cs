@@ -19,8 +19,47 @@ namespace Garage2._0.Controllers
         // GET: ParkedVehicles
         public async Task<IActionResult> Index()
         {
-            return View(await db.ParkedVehicle.ToListAsync());
+
+            var model = new VehicleTypeViewModel { VehicleList = await _context.ParkedVehicle.ToListAsync() };
+            return View(model);
         }
+
+        //Added by Stefan
+        // Select: list of Vehicle
+        private async Task<IEnumerable<SelectListItem>> ListOfVehiclesAsync()
+        {
+            return await _context.ParkedVehicle
+                        .Select(m => m.VehicleType)
+                        .Distinct()
+                        .Select(m => new SelectListItem
+                        {
+                            Text = m.ToString(),
+                            Value = m.ToString()
+                        })
+                        .ToListAsync();
+        }
+
+        // Added by Stefan
+        // Filter
+        public async Task<IActionResult> Filter(VehicleTypeViewModel viewModel)
+        {
+            var vehicles = string.IsNullOrWhiteSpace(viewModel.SearchString) ?
+                _context.ParkedVehicle :
+                _context.ParkedVehicle.Where(m => m.VehicleType.ToString().StartsWith(viewModel.SearchString));
+
+            vehicles = viewModel.VehicleType == null ?
+                vehicles :
+                vehicles.Where(m => m.VehicleType == viewModel.VehicleType);
+
+            var model = new VehicleTypeViewModel
+            {
+                VehicleList = await vehicles.ToListAsync(),
+                VehicleTypes = await ListOfVehiclesAsync()
+            };
+
+            return View(nameof(Index), model);
+        }
+
 
         // GET: ParkedVehicles/Details/5
         public async Task<IActionResult> Details(int? id)
