@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Garage2._0.Migrations
 {
     [DbContext(typeof(Garage2_0Context))]
-    [Migration("20201014124008_Init")]
-    partial class Init
+    [Migration("20201015082541_initCreate")]
+    partial class initCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -33,7 +33,8 @@ namespace Garage2._0.Migrations
 
                     b.Property<string>("Color")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(20)")
+                        .HasMaxLength(20);
 
                     b.Property<string>("Make")
                         .IsRequired()
@@ -42,8 +43,8 @@ namespace Garage2._0.Migrations
 
                     b.Property<string>("Model")
                         .IsRequired()
-                        .HasColumnType("nvarchar(15)")
-                        .HasMaxLength(15);
+                        .HasColumnType("nvarchar(20)")
+                        .HasMaxLength(20);
 
                     b.Property<int>("NumOfWheels")
                         .HasColumnType("int");
@@ -60,6 +61,41 @@ namespace Garage2._0.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("ParkedVehicle");
+
+                    b.HasData(
+                        new
+                        {
+                            ID = 1,
+                            ArrivalTime = new DateTime(2020, 10, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Color = "Black",
+                            Make = "Dodge",
+                            Model = "Nitro TR 4/4",
+                            NumOfWheels = 4,
+                            RegNum = "FZK678",
+                            VehicleType = 3
+                        },
+                        new
+                        {
+                            ID = 2,
+                            ArrivalTime = new DateTime(2020, 10, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Color = "Black",
+                            Make = "Camaro",
+                            Model = "SS",
+                            NumOfWheels = 4,
+                            RegNum = "FZK677",
+                            VehicleType = 3
+                        },
+                        new
+                        {
+                            ID = 3,
+                            ArrivalTime = new DateTime(2020, 10, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Color = "Orange",
+                            Make = "Harley Davidson",
+                            Model = "NightRod",
+                            NumOfWheels = 2,
+                            RegNum = "MKT677",
+                            VehicleType = 0
+                        });
                 });
 #pragma warning restore 612, 618
         }
