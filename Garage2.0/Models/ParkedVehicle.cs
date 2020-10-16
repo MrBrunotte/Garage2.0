@@ -9,7 +9,7 @@ namespace Garage2._0.Models
         // Add Data Annotations for each property
         public int ID { get; set; }
 
-        [Required, StringLength(30), Display(Name = "Type of Vehicle")]
+        [Required,  Display(Name = "Type of Vehicle")]
         public VehicleType VehicleType { get; set; }
 
         [Required, StringLength(8), Display(Name ="Registration number")]
