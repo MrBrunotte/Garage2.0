@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Garage2._0.Models
+namespace Garage2._0.Models.ViewModels
 {
     // Added by Stefan for the search function
     public class VehicleTypeViewModel

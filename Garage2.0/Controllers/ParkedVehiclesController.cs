@@ -6,18 +6,16 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using Garage2._0.Data;
-using Garage2._0.Models;
 using Garage2._0.Models.ViewModels;
 using System;
+using Microsoft.CodeAnalysis;
 
 namespace Garage2._0.Controllers
 {
     public class ParkedVehiclesController : Controller
     {
+        private const double costPerMinute = 0.1;
+
         private readonly Garage2_0Context _context;
 
         public ParkedVehiclesController(Garage2_0Context context)
@@ -26,35 +24,37 @@ namespace Garage2._0.Controllers
         }
 
         // GET: ParkedVehicles
+        // Added by Stefan search functionality
         public async Task<IActionResult> Index()
         {
+            var vehicles = await _context.ParkedVehicle.ToListAsync();
 
-            var model = new VehicleTypeViewModel { VehicleList = await _context.ParkedVehicle.ToListAsync() };
+            var model = new VehicleTypeViewModel
+            {
+                VehicleList = vehicles,
+                VehicleTypes = await TypeAsync()
+            };
             return View(model);
         }
 
-        //Added by Stefan
-        // Select: list of Vehicle
-        private async Task<IEnumerable<SelectListItem>> ListOfVehiclesAsync()
+        private async Task<IEnumerable<SelectListItem>> TypeAsync()
         {
             return await _context.ParkedVehicle
-                        .Select(m => m.VehicleType)
-                        .Distinct()
-                        .Select(m => new SelectListItem
-                        {
-                            Text = m.ToString(),
-                            Value = m.ToString()
-                        })
-                        .ToListAsync();
+                         .Select(m => m.VehicleType)
+                         .Distinct()
+                         .Select(m => new SelectListItem
+                         {
+                             Text = m.ToString(),
+                             Value = m.ToString()
+                         })
+                         .ToListAsync();
         }
 
-        // Added by Stefan
-        // Filter
         public async Task<IActionResult> Filter(VehicleTypeViewModel viewModel)
         {
             var vehicles = string.IsNullOrWhiteSpace(viewModel.SearchString) ?
                 _context.ParkedVehicle :
-                _context.ParkedVehicle.Where(m => m.VehicleType.ToString().StartsWith(viewModel.SearchString));
+                _context.ParkedVehicle.Where(m => m.RegNum.StartsWith(viewModel.SearchString));
 
             vehicles = viewModel.VehicleType == null ?
                 vehicles :
@@ -63,7 +63,7 @@ namespace Garage2._0.Controllers
             var model = new VehicleTypeViewModel
             {
                 VehicleList = await vehicles.ToListAsync(),
-                VehicleTypes = await ListOfVehiclesAsync()
+                VehicleTypes = await TypeAsync()
             };
 
             return View(nameof(Index), model);
@@ -95,7 +95,7 @@ namespace Garage2._0.Controllers
         }
 
         // POST: ParkedVehicles/CheckInVehicle
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -127,7 +127,7 @@ namespace Garage2._0.Controllers
         }
 
         // POST: ParkedVehicles/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -156,61 +156,62 @@ namespace Garage2._0.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Feedback), new { RegNum = parkedVehicle.RegNum, Message = "Has been updated" });
             }
             return View(parkedVehicle);
         }
 
-        // GET: ParkedVehicles/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        // GET: ParkedVehicles/Checkout/5
+        public async Task<IActionResult> Checkout(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var parkedVehicle = await _context.ParkedVehicle
-                .FirstOrDefaultAsync(m => m.ID == id);
-            if (parkedVehicle == null)
-            {
-                return NotFound();
-            }
-
-            return View(parkedVehicle);
-        }
-
-        // POST: ParkedVehicles/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var parkedVehicle = await _context.ParkedVehicle.FindAsync(id);
-            _context.ParkedVehicle.Remove(parkedVehicle);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        public async Task<IActionResult> Receipt(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-            
-            var parkedVehicle = await _context.ParkedVehicle.FindAsync(id);
+            var parkedVehicle = await _context.ParkedVehicle.FirstOrDefaultAsync(m => m.ID == id);
 
             if (parkedVehicle == null)
             {
                 return NotFound();
             }
 
-            const double costPerMinute = 0.1; 
             var arrival = parkedVehicle.ArrivalTime;
-            var checkout = DateTime.Now;  
+            var checkout = DateTime.Now;
 
-            var receipt = new ReceiptViewModel
+            var checkoutView = new CheckoutViewModel
             {
                 RegNum = parkedVehicle.RegNum,
+                ArrivalTime = arrival,
+                CheckOutTime = checkout,
+                Period = checkout - arrival,
+                CostPerMinute = costPerMinute,
+                Cost = Math.Round((checkout - arrival).TotalMinutes * costPerMinute, 2)
+            };
+
+            return View(checkoutView);
+        }
+
+        // POST: ParkedVehicles/Checkout/5
+        [HttpPost, ActionName("Checkout")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CheckoutConfirmed(int id)
+        {
+            var parkedVehicle = await _context.ParkedVehicle.FindAsync(id);
+            var regnum = parkedVehicle.RegNum;
+            var arrival = parkedVehicle.ArrivalTime;
+            var checkout = DateTime.Now;
+
+            _context.ParkedVehicle.Remove(parkedVehicle);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Receipt), new { RegNum = regnum, Arrival = arrival, Checkout = checkout });
+        }
+
+        public IActionResult Receipt(string regNum, DateTime arrival, DateTime checkout)
+        {
+            var receipt = new ReceiptViewModel
+            {
+                RegNum = regNum,
                 ArrivalTime = arrival,
                 CheckOutTime = checkout,
                 Period = checkout - arrival,
@@ -218,6 +219,16 @@ namespace Garage2._0.Controllers
             };
 
             return View(receipt);
+        }
+
+        public IActionResult Feedback(string regNum, string message)
+        {
+            var feedback = new FeedbackViewModel
+            {
+                RegNum = regNum,
+                Message = message
+            };
+            return View(feedback);
         }
 
         private bool ParkedVehicleExists(int id)

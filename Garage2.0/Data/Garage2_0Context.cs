@@ -9,7 +9,7 @@ namespace Garage2._0.Data
 {
     public class Garage2_0Context : DbContext
     {
-        public Garage2_0Context (DbContextOptions<Garage2_0Context> options)
+        public Garage2_0Context(DbContextOptions<Garage2_0Context> options)
             : base(options)
         {
         }
