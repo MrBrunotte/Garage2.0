@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Garage2._0.Models.ViewModels
 {
     public class OverViewViewModel
     {
+       // public IEnumerable<ParkedVehicle> VehicleOverViewList { get; set; }
+
         [Display(Name = "Type of Vehicle")]
         public VehicleType? VehicleType { get; set; }
 

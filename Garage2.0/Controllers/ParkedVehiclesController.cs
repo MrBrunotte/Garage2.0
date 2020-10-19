@@ -89,6 +89,31 @@ namespace Garage2._0.Controllers
             return View(parkedVehicle);
         }
 
+        //Soile
+        public async Task<IActionResult> OverView()
+        {
+            var vehicles = await _context.ParkedVehicle.ToListAsync();
+            var model = new List<OverViewViewModel>(); 
+          
+
+            foreach(var vehicle in vehicles)
+            {
+                var arrival = vehicle.ArrivalTime;
+                var nowTime = DateTime.Now;
+
+                model.Add(new OverViewViewModel
+                {
+                    VehicleType = vehicle.VehicleType,
+                    RegNum = vehicle.RegNum,
+                    ArrivalTime = arrival,
+                    Period = nowTime - arrival
+                });
+            }
+
+            return View(model);
+        }
+      
+        //Soile
         // GET: ParkedVehicles/CheckInVehicle
         public IActionResult CheckInVehicle()
         {
@@ -98,9 +123,10 @@ namespace Garage2._0.Controllers
         // POST: ParkedVehicles/CheckInVehicle
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        //Soile
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CheckInVehicle([Bind("ID,VehicleType,RegNum,Color,Make,Model,NumOfWheels,ArrivalTime")] ParkedVehicle parkedVehicle)
+        public async Task<IActionResult> CheckInVehicle([Bind("ID,VehicleType,RegNum,Color,Make,Model,NumOfWheels")] ParkedVehicle parkedVehicle)
         {
             if (ModelState.IsValid)
             {
@@ -108,6 +134,7 @@ namespace Garage2._0.Controllers
                 {
                     if (!RegNumExists(parkedVehicle.RegNum))
                     {
+                        parkedVehicle.ArrivalTime = DateTime.Now;
                         _context.Add(parkedVehicle);
                         await _context.SaveChangesAsync();
                     }
@@ -259,6 +286,7 @@ namespace Garage2._0.Controllers
         {
             return _context.ParkedVehicle.Any(e => e.ID == id);
         }
+        //Soile
         private bool RegNumExists(string regNum)
         {
             return _context.ParkedVehicle.Any(e => e.RegNum == regNum);
