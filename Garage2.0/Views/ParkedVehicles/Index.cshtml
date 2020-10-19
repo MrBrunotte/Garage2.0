@@ -1,24 +1,23 @@
-﻿@model VehicleTypeViewModel
+﻿@model Garage2._0.Models.ViewModels.VehicleTypeViewModel
+@inject Garage2._0.Services.ISelectService service
+@{
+    ViewData["Title"] = "Index";
+}
 
-    @{
-        ViewData["Title"] = "Index";
-    }
+<h1>Parked Vehicles</h1>
 
-    <h1>Index</h1>
-
-    <form asp-action="Filter">
-        <div class="input-group mb-3">
-            <input type="text" class="form-control" name="title" placeholder="Search..." />
-            <div class="input-group-append">
-                <select name="vehicleType" asp-items="@Html.GetEnumSelectList<VehicleType>()" class="form-control">
-                    <option selected="selected" value="">Please select</option>
-                </select>
-            </div>
-            <div class="input-group-append">
-                <button type="submit" class="btn btn-primary"><i class="fa fa-search">&emsp;Search</i></button>
-            </div>
+<form asp-action="Filter">
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" name="SearchString" placeholder="Search Registration Number..." />
+        <div class="input-group-append ml-1">
+            <select asp-for="VehicleType" asp-items="@await service.TypeAsync()" class="form-control ml-1">
+                <option selected="selected" value="">Choose Vehicle Type...</option>
+            </select>
         </div>
-    </form>
+        <div class="input-group-append ml-1">
+            <button type="submit" class="btn btn-primary"><i class="fa fa-search">&emsp;Search</i></button>
+        </div>
+    </div>
 
-    <partial name="ParkedVehicleListPartial" model="@Model.VehicleList" />
-
+</form>
+<partial name="ParkedVehicleListPartial" model="@Model.VehicleList" />
