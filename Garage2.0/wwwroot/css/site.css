@@ -12,7 +12,7 @@ a.navbar-brand {
 
 /* Provide sufficient contrast against white background */
 a {
-    color: #848484;
+    color: #fd4209;
     padding: 5px 10px;
     letter-spacing: 1px;
 }
@@ -34,6 +34,20 @@ a:hover {
   border-color: #1861ac;
 }
 
+.parkVehicle {
+    border: 1px solid black;
+    border-radius: 5px;
+    background-color: #e0a800;
+    color: white;
+}
+
+/* Home page */
+.textCenter {
+    text-align: center;
+}
+.h1Home {
+    color: red;
+}
 /* Sticky footer styles
 -------------------------------------------------- */
 html {
