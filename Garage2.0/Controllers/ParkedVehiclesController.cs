@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Garage2._0.Models.ViewModels;
 using System;
 using Microsoft.CodeAnalysis;
+using System.Data;
 
 namespace Garage2._0.Controllers
 {
@@ -103,9 +104,32 @@ namespace Garage2._0.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(parkedVehicle);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                try
+                {
+                    if (!RegNumExists(parkedVehicle.RegNum))
+                    {
+                        _context.Add(parkedVehicle);
+                        await _context.SaveChangesAsync();
+                    }
+                    else
+                    {
+                        return RedirectToAction(nameof(Feedback), new { RegNum = parkedVehicle.RegNum, Message = "Already Parked, Please insert the right Registration Number" });
+                    }
+                }
+                catch (DBConcurrencyException)
+                {
+                    //ToDo
+                    if (RegNumExists(parkedVehicle.RegNum))
+                    {
+                        return RedirectToAction(nameof(Feedback), new { RegNum = parkedVehicle.RegNum, Message = "The Registraion number exist, Some error occured" });
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Feedback), new { RegNum = parkedVehicle.RegNum, Message = "Has been checked in" });
+               // return RedirectToAction(nameof(Index));
             }
             return View(parkedVehicle);
         }
@@ -234,6 +258,10 @@ namespace Garage2._0.Controllers
         private bool ParkedVehicleExists(int id)
         {
             return _context.ParkedVehicle.Any(e => e.ID == id);
+        }
+        private bool RegNumExists(string regNum)
+        {
+            return _context.ParkedVehicle.Any(e => e.RegNum == regNum);
         }
     }
 }

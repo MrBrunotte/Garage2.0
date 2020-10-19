@@ -27,7 +27,7 @@ namespace Garage2._0.Models
         [Required, Range(1,20), Display(Name = "Number of Wheels")]
         public int NumOfWheels { get; set; }
 
-        [DataType(DataType.Duration), Display(Name = "Time of Arrival")]
+        [Display(Name = "Time of Arrival")]
         public DateTime ArrivalTime { get; set; }
 
 
