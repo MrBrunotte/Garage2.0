@@ -12,7 +12,7 @@ namespace Garage2._0.Models
         [Required,  Display(Name = "Type of Vehicle")]
         public VehicleType VehicleType { get; set; }
 
-        [Required, StringLength(8), Display(Name ="Registration number")]
+        [Required, StringLength(8, ErrorMessage = "Registration number can only be 8 characters long"), Display(Name ="Registration number")]
         public string RegNum { get; set; }
 
         [Required, StringLength(30), Display(Name = "Vehicle Color")]
