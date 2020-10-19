@@ -1,22 +1,35 @@
-﻿@model Garage2._0.Models.ParkedVehicle
-@{
-    ViewData["Title"] = "The Garage";
-}
-
-<div class="container textCenter">
-    <h1 class="h1Home">Welcome to Garage 2.0</h1>
-    <h4 class="h2Home">The Garage goes ASP.NET MVC!</h4>
-    <p class="pHome">This version is a single model MVC project - ParkedVehicle</p>
-    <p class="pHome">
-        <a class="parkVehicle" asp-controller="ParkedVehicles" asp-action="Index">Parked Cars</a>
-    </p>
-    <p class="pHome">
-        <a class="parkVehicle" asp-controller="ParkedVehicles" asp-action="CheckInVehicle">Park Your Vehicle</a>
-    </p>
-
-</div>
-
-
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Garage2.0</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,900;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+    <div class="container textCenter">
+        <h1 class="h1Home">Welcome to Garage 2.0</h1>
+        <h4 class="h2Home">The Garage goes ASP.NET MVC!</h4>
+        <p class="pHome">This version is a single model MVC project - ParkedVehicle</p>
+        <p class="pHome">
+            <a class="parkVehicle" asp-controller="ParkedVehicles" asp-action="Index">Parked Cars</a>
+        </p>
+        <p class="pHome">
+            <a class="parkVehicle" asp-controller="ParkedVehicles" asp-action="CheckInVehicle">Park Your Vehicle</a>
+        </p>
+    </div>
+    <footer class="border-top footer text-muted centerItemVertical footerBg">
+        <div class="container">
+            Garage 2.0 - Grupp 2 || Webmasters Soile, Torbjörn och Stefan &#169; 2020
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+</body>
+</html>
 
 
 
