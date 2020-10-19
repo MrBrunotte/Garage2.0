@@ -15,13 +15,13 @@ namespace Garage2._0.Models
         [Required, StringLength(8), Display(Name ="Registration number")]
         public string RegNum { get; set; }
 
-        [Required, StringLength(20), Display(Name = "Vehicle Color")]
+        [Required, StringLength(30), Display(Name = "Vehicle Color")]
         public string Color { get; set; }
 
-        [Required, StringLength(15), Display(Name = "Make of Vehicle")]
+        [Required, StringLength(30), Display(Name = "Make of Vehicle")]
         public string Make { get; set; }
 
-        [Required, StringLength(20), Display(Name = "Model of Vehicle")]
+        [Required, StringLength(30), Display(Name = "Model of Vehicle")]
         public string Model { get; set; }
 
         [Required, Range(1,20), Display(Name = "Number of Wheels")]
