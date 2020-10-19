@@ -1,21 +1,21 @@
-﻿@{
+﻿@model Garage2._0.Models.ParkedVehicle
+@{
     ViewData["Title"] = "The Garage";
 }
 
-<div class="container">
-    <h1>Welcome to Garage 2.0</h1>
-    <h2>The Garage goes ASP:NET MVC!</h2>
-    <p>This version is a single model MVC project - ParkedVehicle</p>
-    <h3>Menu</h3>
-    <ul>
-        <li>Park your vehicle</li>
-        <li>Collect your vehicle</li>
-    </ul>
-    
+<div class="container textCenter">
+    <h1 class="h1Home">Welcome to Garage 2.0</h1>
+    <h4 class="h2Home">The Garage goes ASP.NET MVC!</h4>
+    <p class="pHome">This version is a single model MVC project - ParkedVehicle</p>
+    <p class="pHome">
+        <a class="parkVehicle" asp-controller="ParkedVehicles" asp-action="Index">Parked Cars</a>
+    </p>
+    <p class="pHome">
+        <a class="parkVehicle" asp-controller="ParkedVehicles" asp-action="CheckInVehicle">Park Your Vehicle</a>
+    </p>
+
 </div>
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+
 
 
 
