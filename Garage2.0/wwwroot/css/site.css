@@ -56,6 +56,9 @@ a:hover {
 .textCenter {
     text-align: center;
 }
+.bodyColor {
+    background-color: orange;
+}
 .pHome {
     margin-bottom: 35px;
 }

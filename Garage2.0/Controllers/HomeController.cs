@@ -20,7 +20,7 @@ namespace Garage2._0.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            return View("../../MyViews/LandingPage/LandingPage");
         }
 
         public IActionResult Privacy()
