@@ -140,7 +140,8 @@ namespace Garage2._0.Controllers
                     }
                     else
                     {
-                        return RedirectToAction(nameof(Feedback), new { RegNum = parkedVehicle.RegNum, Message = "Already Parked, Please insert the right Registration Number" });
+                        ModelState.AddModelError("RegNum", $"{parkedVehicle.RegNum} Already parked.");
+                        return View();
                     }
                 }
                 catch (DBConcurrencyException)
